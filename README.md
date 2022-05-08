@@ -13,6 +13,12 @@
 pythonw pyOCR.v0.1.5.py
 ```
 
+## 软件截图
+
+![OCR](https://pic.imgdb.cn/item/6277c74809475431292e176c.jpg)
+
+![OCR一键翻译](https://pic.imgdb.cn/item/6277c79109475431292f6ad7.jpg)
+
 ## 其他补充说明
 
 1. 依赖的软件包
