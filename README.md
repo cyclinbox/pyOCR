@@ -44,7 +44,7 @@ pythonw pyOCR.v0.1.5.py
 
 4. 跨平台问题？
     
-    目前仅在Windows平台进行过测试，但由于tkinter是一个跨平台的GUI库，理论上可以在Linux/macOS上完美运行。如有疑问，欢迎反馈。
+    目前仅在Windows平台进行过测试，但由于tkinter是一个跨平台的GUI库，理论上可以在Linux/macOS上运行。如有疑问，欢迎反馈。
 
 ## 软件截图
 
