@@ -39,6 +39,13 @@ rb_ico = base64.b64decode(base64_ico)
 outf.write(rb_ico)
 outf.close()
 
+# 代理设置（update on 2022-11-21）
+proxies={
+'http': 'http://127.0.0.1:7890',
+'https': 'http://127.0.0.1:7890'
+}
+
+
 ###########################
 # 与OCR API调用有关的代码 #
 ###########################
@@ -48,7 +55,8 @@ def get_token():
     AK = 'xYNYNSTd5S77hhrCt7qFMo59'
     SK = 'O7uBzaGU3QLkWNcIBtCZgjCSvECYBua4'
     host = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id={}&client_secret={}'.format(AK,SK)
-    response = requests.get(host)
+    #response = requests.get(host)
+    response = requests.get(host, proxies=proxies)
     if response:
         rp = response.json()
         return rp['access_token']
@@ -63,7 +71,8 @@ def ocr(imgpath):
     access_token = get_token()
     request_url = request_url + "?access_token=" + access_token
     headers = {'content-type': 'application/x-www-form-urlencoded'}
-    response = requests.post(request_url, data=params, headers=headers)
+    #response = requests.post(request_url, data=params, headers=headers)
+    response = requests.post(request_url, proxies=proxies, data=params, headers=headers)
     if response:
         return response.json()
 
@@ -117,7 +126,8 @@ def translate(query):
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     payload = {'appid': appid, 'q': query, 'from': 'auto', 'to': 'auto', 'salt': salt, 'sign': sign}
     # Send request
-    r = requests.post(url, params=payload, headers=headers)
+    #r = requests.post(url, params=payload, headers=headers)
+    r = requests.post(url, proxies=proxies, params=payload, headers=headers)
     try:
         result = r.json()
     except:
@@ -251,12 +261,13 @@ if(__name__=='__main__'):
     #获取屏幕的缩放因子
     ScaleFactor=ctypes.windll.shcore.GetScaleFactorForDevice(0)
     #设置程序缩放
-    root.tk.call('tk', 'scaling', ScaleFactor/75)
+    root.tk.call('tk', 'scaling', ScaleFactor/64)
 
     root.title("pyOCR v0.1.5 - 基于ttk的修改版")
     root.geometry('600x400')  #窗口大小：宽*高
     root.iconbitmap('pyOCR.ico')   # 更改窗口图标
-    root.resizable(width=False, height=False) #设置宽高不可变
+    #root.resizable(width=False, height=False) #设置宽高不可变
+    root.resizable(width=True, height=True) #设置宽高可变
      
     """ 定义一些组件的样式 """
     style = Style()
