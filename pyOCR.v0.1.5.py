@@ -228,11 +228,36 @@ def clear_text_Box():
     text_Box.config(state=NORMAL)
     OriText = '空字符串'
     text_Box.delete('0.0',END)
+
+# 合并文本（删除换行符）
+def merge_text():
+    global isOriText
+    global   OriText
+    #print(isOriText)
+    if(isOriText):
+        #text_in_box = text_Box.get('0.0',END)
+        text_in_box = text_Box.get('0.0',END)
+        temp_text = text_in_box.replace("\n","").replace("\r","")
+        OriText = temp_text
+        #if(text_in_box != OriText):OriText = text_in_box
+        #print(text_in_box)
+        #translate_text = translate(OriText)
+        text_Box.delete('0.0',END)
+        text_Box.insert('0.0',temp_text)
+        #text_Box.config(state=DISABLED)
+    else:
+        pass
+        #text_Box.config(state=NORMAL)
+        #text_Box.delete('0.0',END)
+        #text_Box.insert('0.0',OriText)
+    #if(isOriText):isOriText = False
+    #else:         isOriText = True
+
 # 文字翻译
 def trans_text_Box():
     global isOriText
     global   OriText
-    print(isOriText)
+    #print(isOriText)
     if(isOriText):
         #text_in_box = text_Box.get('0.0',END)
         text_in_box = text_Box.get('0.0',END)
@@ -296,7 +321,14 @@ if(__name__=='__main__'):
     btn_TextTrans = Button(frame1,text="原文/翻译",command=trans_text_Box)
     #btn_TextCls.place(width=50,height=30,x=175,y=5)
     btn_TextTrans.pack(side='left')
-    
+ 
+    """ 合并文字为同一段 """
+    btn_TextTrans = Button(frame1,text="合并文字",command=merge_text)
+    #btn_TextCls.place(width=50,height=30,x=175,y=5)
+    btn_TextTrans.pack(side='left')
+ 
+
+
     """ 清空文本框 """
     btn_TextCls = Button(frame1,text="清空文本框",command=clear_text_Box,style='CLS.TButton')
     #btn_TextCls.place(width=100,height=30,x=235,y=5)
