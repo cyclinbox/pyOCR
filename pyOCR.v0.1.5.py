@@ -237,7 +237,8 @@ def merge_text():
     if(isOriText):
         #text_in_box = text_Box.get('0.0',END)
         text_in_box = text_Box.get('0.0',END)
-        temp_text = text_in_box.replace("\n","").replace("\r","")
+        temp_text = text_in_box.replace("-\n","")
+        temp_text = temp_text.replace("\n"," ")
         OriText = temp_text
         #if(text_in_box != OriText):OriText = text_in_box
         #print(text_in_box)
