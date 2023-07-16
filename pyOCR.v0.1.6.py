@@ -230,25 +230,27 @@ def ocr_from_clipboard():
 # 清空文本框
 def clear_text_Box():
     global text_Box
-    global OriText
+    global isOriText
+    global   OriText
+    global btnText_TextTrans
+    isOriText = True
     text_Box.config(state=NORMAL)
-    OriText = '空字符串'
+    OriText = ''
     text_Box.delete('0.0',END)
+    btnText_TextTrans.set("翻译")
+
 
 # 粘贴文字
 def paste_text():
+    clear_text_Box()
     global isOriText
     global   OriText
-    if(isOriText):
-        temp_text = pyperclip.paste()
-        #text_Box.get('0.0',END)
-        #temp_text = text_in_box.replace("-\n","")
-        #temp_text = temp_text.replace("\n"," ")
-        OriText = temp_text
-        text_Box.delete('0.0',END)
-        text_Box.insert('0.0',temp_text)
-    else:
-        pass
+    temp_text = pyperclip.paste()
+    OriText = temp_text
+    text_Box.delete('0.0',END)
+    text_Box.insert('0.0',temp_text)
+    merge_text()
+    trans_text_Box()
 
 
 # 合并文本（删除换行符）
@@ -257,8 +259,19 @@ def merge_text():
     global   OriText
     if(isOriText):
         text_in_box = text_Box.get('0.0',END)
+        #print(text_in_box) #debug
         temp_text = text_in_box.replace("-\n","")
+        #print("replace -\\n") #debug
+        #print(temp_text) #debug
+        temp_text = temp_text.replace("-\r","")
+        #print("replace -\\r") #debug
+        #print(temp_text) #debug
         temp_text = temp_text.replace("\n"," ")
+        #print("replace \\n") #debug
+        #print(temp_text) #debug
+        temp_text = temp_text.replace("\r"," ")
+        #print("replace \\n") #debug
+        #print(temp_text) #debug
         OriText = temp_text
         text_Box.delete('0.0',END)
         text_Box.insert('0.0',temp_text)
@@ -314,7 +327,7 @@ if(__name__=='__main__'):
     root.tk.call('tk', 'scaling', ScaleFactor/64)
 
     root.title("pyOCR v0.1.6")
-    root.geometry('400x200')  #窗口大小：宽*高
+    root.geometry('460x240')  #窗口大小：宽*高
     root.iconbitmap('pyOCR.ico')   # 更改窗口图标
     #root.resizable(width=False, height=False) #设置宽高不可变
     root.resizable(width=True, height=True) #设置宽高可变
@@ -364,8 +377,8 @@ if(__name__=='__main__'):
     btn_TextMerge = Button(frame1,text="合并",command=merge_text,style='NML.TButton')
     btn_TextMerge.pack(side='left')
 
-    """ 从剪切板中粘贴文字 """
-    btn_PasteTextFromClip = Button(frame1,text="粘贴",command=paste_text,style='NML.TButton')
+    """ 从剪切板中粘贴文字，并一键翻译 """
+    btn_PasteTextFromClip = Button(frame1,text="一键粘贴翻译",command=paste_text)
     btn_PasteTextFromClip.pack(side='left')
     
     """ 窗口置顶与取消 """
@@ -393,7 +406,8 @@ if(__name__=='__main__'):
     """ 文本框 """
     global text_Box
     text_Box = Text(frame2,#height=18,width=64,
-            font=('consolas',9,'normal'))
+            font=('Microsoft YaHei Mono',9,'normal'))
+            #font=('consolas',9,'normal'))
     text_Box.pack(side='left',fill=Y)
     #text_Box.place(width=580,height=350,x=0,y=40)
     scroll = Scrollbar(frame2)
