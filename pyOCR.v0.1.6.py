@@ -57,7 +57,8 @@ def get_token():
     SK = 'O7uBzaGU3QLkWNcIBtCZgjCSvECYBua4'
     host = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id={}&client_secret={}'.format(AK,SK)
     #response = requests.get(host)
-    response = requests.get(host, proxies=proxies)
+    try:    response = requests.get(host, proxies=proxies)
+    except: response = requests.get(host)
     if response:
         rp = response.json()
         return rp['access_token']
@@ -73,7 +74,8 @@ def ocr(imgpath):
     request_url = request_url + "?access_token=" + access_token
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     #response = requests.post(request_url, data=params, headers=headers)
-    response = requests.post(request_url, proxies=proxies, data=params, headers=headers)
+    try:    response = requests.post(request_url, proxies=proxies, data=params, headers=headers)
+    except: response = requests.post(request_url, data=params, headers=headers)
     if response:
         return response.json()
 
@@ -128,7 +130,8 @@ def translate(query):
     payload = {'appid': appid, 'q': query, 'from': 'auto', 'to': 'auto', 'salt': salt, 'sign': sign}
     # Send request
     #r = requests.post(url, params=payload, headers=headers)
-    r = requests.post(url, proxies=proxies, params=payload, headers=headers)
+    try:    r = requests.post(url, proxies=proxies, params=payload, headers=headers)
+    except: r = requests.post(url, params=payload, headers=headers)
     try:
         result = r.json()
     except:
